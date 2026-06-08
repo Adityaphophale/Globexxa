@@ -1,0 +1,6 @@
+{
+  "name": "Globexxa",
+  "description": "Modern premium B2B international import-export and private-label packaging solutions company for Indian-origin products.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
