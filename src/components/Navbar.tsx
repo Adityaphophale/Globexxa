@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { Menu, X, Globe, Phone, ArrowRight } from "lucide-react";
+=======
+import { Menu, X, Globe, Phone, Mail, Award, ArrowRight } from "lucide-react";
+>>>>>>> 049c6cf028ec37184997eb2e5b4c9c25ebc1f8fd
 
 interface NavbarProps {
   onQuoteClick: () => void;
@@ -31,6 +35,33 @@ export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) 
   ];
 
   return (
+<<<<<<< HEAD
+=======
+    <>
+      {/* Upper Info Strip */}
+      <div className="bg-primary-navy text-gray-300 text-xs py-2 px-6 hidden md:flex justify-between items-center border-b border-white/10 select-none">
+        <div className="flex items-center gap-6">
+          <a href="mailto:info@globexxa.com" className="flex items-center gap-2 hover:text-sky-blue transition">
+            <Mail className="w-3.5 h-3.5 text-sky-blue" />
+            <span>info@globexxa.com</span>
+          </a>
+          <a href="tel:+919274821162" className="flex items-center gap-2 hover:text-sky-blue transition">
+            <Phone className="w-3.5 h-3.5 text-sky-blue" />
+            <span>+91 92748 21162</span>
+          </a>
+        </div>
+        <div className="flex items-center gap-6 divide-x divide-white/20">
+          <span className="flex items-center gap-1">
+            <Award className="w-3.5 h-3.5 text-gold-bright" />
+            <span>IEC: 24200155XX</span>
+          </span>
+          <span className="pl-4 text-emerald-400">APEDA Registered Exporter</span>
+          <span className="pl-4 text-sky-blue">FSSAI licensed #10725999000XXX</span>
+        </div>
+      </div>
+
+      {/* Main Navbar */}
+>>>>>>> 049c6cf028ec37184997eb2e5b4c9c25ebc1f8fd
       <nav
         className={`sticky top-0 z-40 transition-all duration-300 ${
           scrolled
@@ -41,12 +72,27 @@ export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
+<<<<<<< HEAD
             <a href="#home" className="flex items-center group">
               <img
                 src="/logo.png"
                 alt="Globexxa Logo"
                 className="h-12 w-auto object-contain rounded-md shadow-sm"
               />
+=======
+            <a href="#home" className="flex items-center gap-2.5 group">
+              <div className="w-10 h-10 bg-gradient-to-tr from-gold-bright to-royal-blue rounded-lg flex items-center justify-center font-bold text-white text-lg shadow-md shadow-royal-blue/20 group-hover:scale-105 transition-transform">
+                G
+              </div>
+              <div>
+                <span className="font-bold text-xl text-white tracking-tight block leading-none">
+                  Globexxa
+                </span>
+                <span className="text-[9px] text-sky-blue font-mono uppercase tracking-widest mt-1 block">
+                  Export Excellence
+                </span>
+              </div>
+>>>>>>> 049c6cf028ec37184997eb2e5b4c9c25ebc1f8fd
             </a>
 
             {/* Desktop Navigation */}
@@ -146,5 +192,9 @@ export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) 
           </div>
         )}
       </nav>
+<<<<<<< HEAD
+=======
+    </>
+>>>>>>> 049c6cf028ec37184997eb2e5b4c9c25ebc1f8fd
   );
 }

@@ -8,12 +8,27 @@ export default function Footer() {
         
         {/* Brand identity column */}
         <div className="lg:col-span-2 space-y-6">
+<<<<<<< HEAD
           <a href="#home" className="flex items-center group">
             <img
               src="/logo.png"
               alt="Globexxa Logo"
               className="h-14 w-auto object-contain rounded-md shadow-sm"
             />
+=======
+          <a href="#home" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-gradient-to-tr from-gold-bright to-royal-blue rounded-lg flex items-center justify-center font-bold text-white text-base">
+              G
+            </div>
+            <div>
+              <span className="font-extrabold text-lg text-white tracking-tight block leading-none">
+                Globexxa
+              </span>
+              <span className="text-[9px] text-sky-blue font-mono uppercase tracking-widest mt-1 block">
+                “Where Global Vision Meets Excellence”
+              </span>
+            </div>
+>>>>>>> 049c6cf028ec37184997eb2e5b4c9c25ebc1f8fd
           </a>
           <p className="text-sm font-light leading-relaxed max-w-sm">
             Globexxa is a premium private-label solutions firm sourcing agricultural derivatives, sugar, spices, and grains directly from verified Indian farmer-belts for worldwide containerized shipping.
