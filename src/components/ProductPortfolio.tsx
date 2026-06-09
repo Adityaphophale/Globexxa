@@ -53,7 +53,7 @@ export default function ProductPortfolio({ onQuoteClick }: ProductPortfolioProps
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.id)}
-              className={`flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 activeTab === cat.id
                   ? "bg-primary-navy text-white shadow-lg shadow-primary-navy/15 scale-102"
                   : "bg-slate-50 hover:bg-slate-100 text-gray-600 hover:text-primary-navy border border-gray-200/50"
@@ -149,7 +149,7 @@ export default function ProductPortfolio({ onQuoteClick }: ProductPortfolioProps
 
                 <button
                   onClick={() => onQuoteClick(`${activeCategory.name} - ${prod.name}`)}
-                  className="px-5 py-3 border border-sky-blue/20 hover:border-amber-500 text-sky-blue hover:text-primary-navy hover:bg-amber-500/10 font-bold text-xs uppercase tracking-wide rounded-xl shrink-0 transition"
+                  className="w-full sm:w-auto px-5 py-3 border border-sky-blue/20 hover:border-amber-500 text-sky-blue hover:text-primary-navy hover:bg-amber-500/10 font-bold text-xs uppercase tracking-wide rounded-xl shrink-0 transition text-center cursor-pointer"
                 >
                   Request Sample / RFQ
                 </button>
@@ -160,7 +160,7 @@ export default function ProductPortfolio({ onQuoteClick }: ProductPortfolioProps
         </div>
 
         {/* Private labeling feature promo banner */}
-        <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-8 grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+        <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-6 sm:p-8 grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
           <div className="md:col-span-3 space-y-2 text-left">
             <h4 className="font-bold text-lg text-primary-navy flex items-center gap-2">
               <HeartHandshake className="w-5 h-5 text-amber-500" />

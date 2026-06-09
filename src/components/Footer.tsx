@@ -8,11 +8,11 @@ export default function Footer() {
         
         {/* Brand identity column */}
         <div className="lg:col-span-2 space-y-6">
-          <a href="#home" className="flex items-center group">
+          <a href="#home" className="inline-flex items-center group bg-white/95 px-3.5 py-2 rounded-lg shadow-md border border-white/10 hover:bg-white transition-all duration-300">
             <img
               src="/logo.png"
               alt="Globexxa Logo"
-              className="h-14 w-auto object-contain rounded-md shadow-sm"
+              className="h-11 w-auto object-contain"
             />
           </a>
           <p className="text-sm font-light leading-relaxed max-w-sm">

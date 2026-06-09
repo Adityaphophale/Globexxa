@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Phone, Mail, MapPin, CheckCircle, Send, ShieldAlert, Sparkles } from "lucide-react";
+import { Phone, Mail, MapPin, CheckCircle, Send, ShieldAlert, Sparkles, ArrowRight } from "lucide-react";
 
 interface ContactFormProps {
   prefilledProduct?: string;
@@ -12,8 +12,8 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
     email: "",
     phone: "",
     company: "",
-    productCategory: "",
-    containerVolume: "LCL (Less than Container)",
+    country: "",
+    productCategory: "Agro Commodities",
     comments: ""
   });
   
@@ -38,8 +38,8 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone) {
-      alert("Please specify name, corporate email, and active phone number.");
+    if (!formData.name || !formData.company || !formData.email || !formData.country || !formData.productCategory || !formData.comments) {
+      alert("Please fill in all required fields.");
       return;
     }
 
@@ -63,8 +63,8 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
           email: "",
           phone: "",
           company: "",
-          productCategory: "",
-          containerVolume: "LCL (Less than Container)",
+          country: "",
+          productCategory: "Agro Commodities",
           comments: ""
         });
         if (onClearPrefill) onClearPrefill();
@@ -104,9 +104,9 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
           {/* Left info column */}
           <div className="lg:col-span-5 space-y-8 text-left">
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-primary-navy">Our Corporate Offices</h3>
+              <h3 className="text-2xl font-bold text-primary-navy">Our Corporate Office</h3>
               <p className="text-gray-500 text-sm font-light leading-relaxed">
-                Contact our desks directly. We operate direct response coordinates with active physical verification assets at ports of packaging.
+                Contact our desk directly. We operate direct response coordinates with active physical verification assets at ports of packaging.
               </p>
             </div>
 
@@ -119,35 +119,9 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
                 <div>
                   <h4 className="font-extrabold text-sm text-gray-850">India Headquarters &amp; Sourcing Facility</h4>
                   <p className="text-xs text-gray-500 leading-normal mt-1">
-                    Globexxa Tower, Off Race Course Road, Alkapuri, Vadodara, Gujarat - 390007, India.
+                    4th Floor, Siddhivinayak Arcus 413, Bhayli Road Bhayli Vadodara, Gujarat 391410 India
                   </p>
                   <p className="text-[10px] text-sky-blue mt-1 font-mono uppercase font-bold">Mundra Port: 340km Logistics Radius</p>
-                </div>
-              </div>
-
-              {/* Singapore office */}
-              <div className="flex gap-4 items-start">
-                <div className="p-3 bg-white border border-gray-150 rounded-xl text-sky-blue shrink-0">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-sm text-gray-850">Singapore Trade Desk Office</h4>
-                  <p className="text-xs text-gray-500 leading-normal mt-1">
-                    Marina Boulevard, Level 39 Marina Bay Financial Centre Tower 2, Singapore 018983.
-                  </p>
-                </div>
-              </div>
-
-              {/* US Representative */}
-              <div className="flex gap-4 items-start">
-                <div className="p-3 bg-white border border-gray-150 rounded-xl text-amber-600 shrink-0">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-sm text-gray-850">USA Liaison Desk</h4>
-                  <p className="text-xs text-gray-500 leading-normal mt-1">
-                    Broadway, 33rd Floor, MB Financial Plaza, New York, NY 10006, United States.
-                  </p>
                 </div>
               </div>
             </div>
@@ -177,109 +151,115 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
               Submit your required parameters. We return tailored bulk price quotes, SGS purity reports and logistics options in 24 hours.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-left">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-6 text-left">
+              {/* Row 1: Full Name & Organization */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Company Representative Name*</label>
+                  <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Full Name *</label>
                   <input
                     type="text"
                     name="name"
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="e.g. David Henderson"
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
+                    className="w-full bg-white border border-gray-200 rounded-none py-3 px-4 text-sm text-gray-800 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Corporate Email Address*</label>
+                  <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Organization *</label>
+                  <input
+                    type="text"
+                    name="company"
+                    required
+                    value={formData.company}
+                    onChange={handleChange}
+                    className="w-full bg-white border border-gray-200 rounded-none py-3 px-4 text-sm text-gray-800 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200"
+                  />
+                </div>
+              </div>
+
+              {/* Row 2: Email Address & Phone Number */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Email Address *</label>
                   <input
                     type="email"
                     name="email"
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="e.g. procurement@supermarket.com"
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
+                    className="w-full bg-white border border-gray-200 rounded-none py-3 px-4 text-sm text-gray-800 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Active Telephone/WhatsApp Number*</label>
+                  <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Phone Number</label>
                   <input
                     type="text"
                     name="phone"
-                    required
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="e.g. +1 415 555 0199"
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
+                    className="w-full bg-white border border-gray-200 rounded-none py-3 px-4 text-sm text-gray-800 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200"
                   />
                 </div>
+              </div>
+
+              {/* Row 3: Country & Product Interest */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Company / Corporate entity Name</label>
+                  <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Country *</label>
                   <input
                     type="text"
-                    name="company"
-                    value={formData.company}
+                    name="country"
+                    required
+                    value={formData.country}
                     onChange={handleChange}
-                    placeholder="e.g. Henderson Wholesalers Ltd"
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
+                    className="w-full bg-white border border-gray-200 rounded-none py-3 px-4 text-sm text-gray-800 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Target Product Category</label>
-                  <select
-                    name="productCategory"
-                    value={formData.productCategory}
-                    onChange={handleChange}
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
-                  >
-                    <option value="">-- Choose Segment --</option>
-                    <option value="Sugar Solutions">Sugar Solutions</option>
-                    <option value="Pure Indian Spices">Pure Indian Spices</option>
-                    <option value="Sauces & Pastes">Sauces, Pastes & Ketchup</option>
-                    <option value="Grains & Staples">Grains &amp; Basmati Rice</option>
-                    <option value="Packaged Foods & Namkeens">Packaged Organic Snacks</option>
-                    <option value="Custom General Inquiry">General Procurement Inquiry</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Est Container Cargo Volume</label>
-                  <select
-                    name="containerVolume"
-                    value={formData.containerVolume}
-                    onChange={handleChange}
-                    className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
-                  >
-                    <option value="LCL (Less than Container)">LCL Trial Consolidation Package</option>
-                    <option value="20ft Dry FCL">20ft Dry Cargo FCL</option>
-                    <option value="40ft High-Cube FCL">40ft High-Cube FCL</option>
-                    <option value="40ft Refrigerated Reefer">40ft Reefer Container</option>
-                  </select>
+                  <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Product Interest *</label>
+                  <div className="relative">
+                    <select
+                      name="productCategory"
+                      required
+                      value={formData.productCategory}
+                      onChange={handleChange}
+                      className="w-full bg-white border border-gray-200 rounded-none py-3 px-4 pr-10 text-sm text-gray-800 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200 appearance-none cursor-pointer"
+                    >
+                      <option value="Agro Commodities">Agro Commodities</option>
+                      <option value="Sugar Solutions">Sugar Solutions</option>
+                      <option value="Pure Indian Spices">Pure Indian Spices</option>
+                      <option value="Sauces & Pastes">Sauces, Pastes & Ketchup</option>
+                      <option value="Grains & Staples">Grains &amp; Basmati Rice</option>
+                      <option value="Packaged Foods & Namkeens">Packaged Organic Snacks</option>
+                      <option value="Custom General Inquiry">General Procurement Inquiry</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-600 uppercase block mb-1">Custom packaging specifications &amp; timeline remarks</label>
+              {/* Row 4: Requirements / Message */}
+              <div>
+                <label className="text-[10px] font-extrabold tracking-widest text-[#7C8E7C] uppercase block mb-2">Requirements / Message *</label>
                 <textarea
                   name="comments"
+                  required
                   rows={4}
                   value={formData.comments}
                   onChange={handleChange}
-                  placeholder="Detail your desired moisture levels, private labelling design blueprints, bag sizing or required certifications (Halal, Kosher, Phytosanitary, SGS)..."
-                  className="w-full bg-slate-50 border border-gray-200 rounded-lg py-2.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#2456A6]/20 focus:bg-white"
+                  placeholder="Specify quantity, origin, or other technical details..."
+                  className="w-full bg-white border border-gray-200 rounded-none p-4 text-sm text-gray-850 placeholder-gray-400 focus:border-[#1E5128] focus:ring-1 focus:ring-[#1E5128] focus:outline-none transition-all duration-200 resize-y min-h-[120px]"
                 ></textarea>
               </div>
 
               {submitResult && (
                 <div
-                  className={`p-4 rounded-xl flex gap-3 text-xs leading-relaxed border ${
+                  className={`p-4 rounded-none flex gap-3 text-xs leading-relaxed border ${
                     submitResult.success
                       ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-800"
                       : "bg-amber-500/10 border-amber-500/20 text-amber-800"
@@ -303,14 +283,14 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 bg-[#163A70] hover:bg-[#2456A6] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 shadow-md shadow-royal-blue/10 flex justify-center items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-4 bg-[#1E5128] hover:bg-[#163e1f] text-white font-bold text-xs uppercase tracking-widest rounded-none transition duration-300 flex justify-center items-center gap-2 cursor-pointer disabled:opacity-50 border-none"
               >
                 {isSubmitting ? (
                   <span>Processing B2B parameters...</span>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" />
-                    <span>Submit Sourcing Parameters</span>
+                    <span>Submit Inquiry</span>
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>

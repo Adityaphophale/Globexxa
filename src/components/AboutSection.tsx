@@ -58,7 +58,7 @@ export default function AboutSection() {
 
           {/* Right Column Grid card showcasing India, Singapore, USA presence */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-gradient-to-tr from-[#163A70] to-[#2456A6] text-white p-8 rounded-2xl shadow-xl relative overflow-hidden">
+            <div className="bg-gradient-to-tr from-[#163A70] to-[#2456A6] text-white p-6 sm:p-8 rounded-2xl shadow-xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-sky-blue/10 rounded-full blur-2xl"></div>
               
               <h4 className="font-extrabold text-lg text-amber-400 uppercase tracking-wider mb-4">

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Globe, Phone } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 
 interface NavbarProps {
   onQuoteClick: () => void;
-  onAssistantClick: () => void;
 }
 
-export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) {
+export default function Navbar({ onQuoteClick }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -41,11 +40,11 @@ export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href="#home" className="flex items-center group">
+            <a href="#home" className="flex items-center group bg-white/95 px-3 py-1.5 rounded-lg shadow-md border border-white/10 hover:bg-white transition-all duration-300">
               <img
                 src="/logo.png"
                 alt="Globexxa Logo"
-                className="h-12 w-auto object-contain rounded-md shadow-sm"
+                className="h-9 w-auto object-contain"
               />
             </a>
 
@@ -65,14 +64,6 @@ export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) 
 
             {/* Actions */}
             <div className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 2xl:gap-3">
-              <button
-                onClick={onAssistantClick}
-                className="flex items-center gap-1 px-2 py-1 xl:px-2.5 xl:py-1.5 rounded-full border border-sky-blue/30 text-sky-blue bg-sky-blue/5 hover:bg-sky-blue/10 text-[10px] xl:text-[11px] 2xl:text-xs font-semibold tracking-wider transition-all duration-300 shrink-0 whitespace-nowrap"
-              >
-                <Globe className="w-3 h-3 xl:w-3.5 xl:h-3.5 animate-spin-slow" />
-                <span className="lg:hidden xl:inline">AI Trade Help</span>
-                <span className="hidden lg:inline xl:hidden">AI Help</span>
-              </button>
               <a
                 href="https://wa.me/919274821162?text=Hi%20Globexxa%20Team%2C%20I%20am%20interested%20in%20discussing%20private-label%20export%20solutions."
                 target="_blank"
@@ -93,12 +84,6 @@ export default function Navbar({ onQuoteClick, onAssistantClick }: NavbarProps) 
 
             {/* Mobile menu button */}
             <div className="lg:hidden flex items-center gap-2">
-              <button
-                onClick={onAssistantClick}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-full border border-sky-blue/40 text-sky-blue bg-sky-blue/5 text-xs font-semibold"
-              >
-                AI Help
-              </button>
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="text-white hover:text-sky-blue p-1 rounded-md transition"

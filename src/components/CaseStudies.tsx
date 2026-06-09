@@ -39,7 +39,7 @@ export default function CaseStudies() {
           {/* Subtle logo accent */}
           <div className="absolute top-0 right-0 w-36 h-36 bg-blue-50 rounded-full blur-3xl opacity-60"></div>
 
-          <div className="p-8 sm:p-12 space-y-8 relative z-10 text-left">
+          <div className="p-6 sm:p-12 space-y-8 relative z-10 text-left">
             
             {/* Case Info Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-100 pb-6">

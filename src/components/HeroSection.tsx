@@ -1,23 +1,47 @@
-import React from "react";
-import { Globe, ArrowRight, ShieldCheck, Award, Ship, Star } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ArrowRight, ShieldCheck, Award, Ship, Star } from "lucide-react";
 
 interface HeroSectionProps {
   onQuoteClick: () => void;
   onExploreClick: () => void;
-  onAssistantClick: () => void;
 }
 
-export default function HeroSection({ onQuoteClick, onExploreClick, onAssistantClick }: HeroSectionProps) {
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&q=80&w=2000", // Cargo liner on ocean
+  "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=2000", // Container port terminal
+  "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2000", // Warehouse logistics
+  "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=2000"  // Spices & agricultural sourcing
+];
+
+export default function HeroSection({ onQuoteClick, onExploreClick }: HeroSectionProps) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="home" className="relative bg-primary-navy overflow-hidden pt-12 pb-20 md:py-28 lg:py-36 text-white border-b border-white/5">
       {/* Premium Hero Banner Background Image Asset */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&q=80&w=2000"
-          alt="Globexxa Maritime Shipping Liner on Ocean"
-          className="w-full h-full object-cover object-right md:object-center opacity-30 select-none pointer-events-none mix-blend-luminosity brightness-90"
-          referrerPolicy="no-referrer"
-        />
+        {HERO_IMAGES.map((img, idx) => (
+          <div
+            key={idx}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              idx === currentImageIndex ? "opacity-30" : "opacity-0"
+            }`}
+          >
+            <img
+              src={img}
+              alt="Globexxa Global Trade"
+              className="w-full h-full object-cover object-right md:object-center select-none pointer-events-none mix-blend-luminosity brightness-90"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+        ))}
         {/* Subtle royal blue glow highlight overlay */}
         <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-primary-navy via-primary-navy/70 to-transparent"></div>
         <div className="absolute inset-y-0 left-0 w-full md:w-[70%] bg-gradient-to-r from-primary-navy via-primary-navy/85 to-transparent"></div>
@@ -88,13 +112,6 @@ export default function HeroSection({ onQuoteClick, onExploreClick, onAssistantC
               <span>Explore Portfolio</span>
               <ArrowRight className="w-4 h-4" />
             </button>
-            <button
-              onClick={onAssistantClick}
-              className="px-6 py-4 bg-royal-blue/20 hover:bg-royal-blue/30 text-sky-blue border border-sky-blue/20 rounded-lg text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition"
-            >
-              <Globe className="w-4 h-4 animate-spin-slow" />
-              <span>Ask Trade AI</span>
-            </button>
           </div>
         </div>
       </div>
@@ -102,11 +119,11 @@ export default function HeroSection({ onQuoteClick, onExploreClick, onAssistantC
       {/* Global Container Stats Strip */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 md:mt-24">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-1 border border-sky-blue/10 bg-sky-blue/5 rounded-2xl overflow-hidden backdrop-blur-sm">
-          <div className="bg-primary-navy/75 p-6 text-center border-r border-b border-white/5">
+          <div className="bg-primary-navy/75 p-6 text-center border-r border-b md:border-b-0 border-white/5">
             <p className="text-3xl sm:text-4xl font-extrabold text-gold-bright">15+</p>
             <p className="text-xs uppercase text-gray-400 tracking-wider font-semibold mt-1">Premium Categories</p>
           </div>
-          <div className="bg-primary-navy/75 p-6 text-center border-r border-b border-white/5">
+          <div className="bg-primary-navy/75 p-6 text-center border-b md:border-b-0 md:border-r border-white/5">
             <p className="text-3xl sm:text-4xl font-extrabold text-gold-bright">24+</p>
             <p className="text-xs uppercase text-gray-400 tracking-wider font-semibold mt-1">Countries Served</p>
           </div>
@@ -119,6 +136,20 @@ export default function HeroSection({ onQuoteClick, onExploreClick, onAssistantC
             <p className="text-xs uppercase text-gray-400 tracking-wider font-semibold mt-1">Customs Cleared Rate</p>
           </div>
         </div>
+      </div>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2 select-none">
+        {HERO_IMAGES.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentImageIndex(idx)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
+              idx === currentImageIndex ? "bg-gold-bright w-6" : "bg-white/40 hover:bg-white/70"
+            }`}
+            aria-label={`Go to slide ${idx + 1}`}
+          />
+        ))}
       </div>
     </section>
   );

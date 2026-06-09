@@ -1,8 +1,8 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -12,77 +12,132 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Initialize server-side Gemini client utility
-  const apiKey = process.env.GEMINI_API_KEY;
-  const ai = apiKey
-    ? new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            "User-Agent": "aistudio-build",
-          },
+
+
+  // Configure nodemailer transporter using SMTP environment variables
+  const smtpHost = process.env.SMTP_HOST;
+  const smtpPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 587;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const smtpFrom = process.env.SMTP_FROM || "info@globexxa.com";
+
+  const mailTransporter = smtpHost && smtpUser && smtpPass
+    ? nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
         },
       })
     : null;
 
-  // AI Assistant endpoint
-  app.post("/api/assistant", async (req, res) => {
+  // Handle contact or quote submissions on server too
+  app.post("/api/quote", async (req, res) => {
     try {
-      if (!ai) {
-        return res.status(200).json({
-          text: "Hi there! I am the Globexxa B2B Trade & Compliance Assistant. Since my server-side GEMINI_API_KEY is not configured yet, I am running in local-advisory mode. I can still explain that Globexxa exports premium Indian-origin spices, grains, sugar, sauces, and packaged foods. Try setting up your key in **Secrets** for complete dynamic regulatory insights!",
-        });
-      }
+      const { name, email, phone, company, country, productCategory, comments } = req.body;
+      const referenceNo = `GXXA-${Date.now().toString().slice(-6)}`;
+      
+      console.log(`New B2B Sourcing Inquiry received [Ref: ${referenceNo}]:`, req.body);
 
-      const { message } = req.body;
+      const emailSubject = `Globexxa Sourcing Inquiry [Ref: ${referenceNo}] - ${company}`;
+      
+      const textBody = `
+============================================================
+NEW GLOBEXXA B2B INQUIRY DISPATCH
+============================================================
+Reference Number: ${referenceNo}
 
-      if (!message) {
-        return res.status(400).json({ error: "Message is required." });
-      }
+Full Name: ${name}
+Organization/Company: ${company}
+Email Address: ${email}
+Phone Number: ${phone || "Not Provided"}
+Country: ${country}
+Product Interest: ${productCategory}
 
-      const systemInstruction = `
-You are the senior B2B international trade and export compliance consultant for "Globexxa", a premium, enterprise-level private-label export solutions company headquartered in Vadodara, Gujarat, India, with international offices in Singapore and the USA.
-
-Your tone of voice:
-- Highly professional, knowledgeable, authoritative, and helpful corporate persona.
-- Clear, confident, and direct. Avoid excessive technical jargon, but use standard B2B trade terms like Incoterms (FOB, CIF, DDP), Letters of Credit (LC), Phytosanitary Certificates, Custom Clearance, etc., appropriately.
-- Answer questions in a structured and concise manner.
-
-Provide helpful and accurate insights about exporting Indian-origin goods such as:
-1. Agro products, Spices & Herbs, Grains/Staples (Basmati rice, Millets), Packaged foods, Organic goods, Sauces & Pastes.
-2. Compliance certification (FSSAI, APEDA, IEC, Phytosanitary certification, ISO).
-3. Packaging and custom branding options. Globexxa offers premium private-label solutions.
-4. Export logistics, container freight coordination, custom clearance from Indian ports (Mundra, Nhava Sheva).
-5. Explain Incoterms, payment terms, minimum order quantities (MOQ).
-
-Do NOT mention internal software code, database columns, or API routes. Make it sound like a real premier advisory consultation. Keep responses structured and elegant.
+Requirements / Message:
+------------------------------------------------------------
+${comments}
+------------------------------------------------------------
 `;
 
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: message,
-        config: {
-          systemInstruction,
-          temperature: 0.7,
-        },
+      const htmlBody = `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1E293B; max-width: 600px; border: 1px solid #E2E8F0; padding: 24px;">
+          <h2 style="color: #1E5128; border-bottom: 2px solid #1E5128; padding-bottom: 8px; margin-top: 0;">New Globexxa B2B Inquiry</h2>
+          <p style="font-size: 11px; color: #64748B; font-family: monospace; margin-bottom: 20px;">Reference Number: <strong>${referenceNo}</strong></p>
+          
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; width: 150px; font-size: 13px; color: #64748B; text-transform: uppercase;">Full Name:</td>
+              <td style="padding: 6px 0; font-size: 14px;">${name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 13px; color: #64748B; text-transform: uppercase;">Organization:</td>
+              <td style="padding: 6px 0; font-size: 14px;">${company}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 13px; color: #64748B; text-transform: uppercase;">Email Address:</td>
+              <td style="padding: 6px 0; font-size: 14px;"><a href="mailto:${email}" style="color: #2456A6; text-decoration: none;">${email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 13px; color: #64748B; text-transform: uppercase;">Phone Number:</td>
+              <td style="padding: 6px 0; font-size: 14px;">${phone || "<em>Not Provided</em>"}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 13px; color: #64748B; text-transform: uppercase;">Country:</td>
+              <td style="padding: 6px 0; font-size: 14px;">${country}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; font-weight: bold; font-size: 13px; color: #64748B; text-transform: uppercase;">Product Interest:</td>
+              <td style="padding: 6px 0; font-weight: bold; color: #1E5128; font-size: 14px;">${productCategory}</td>
+            </tr>
+          </table>
+
+          <div style="background-color: #F8FAFC; border-left: 4px solid #7C8E7C; padding: 16px; margin-top: 20px;">
+            <h4 style="margin: 0 0 8px 0; font-size: 12px; color: #64748B; text-transform: uppercase;">Requirements & Message:</h4>
+            <p style="margin: 0; font-size: 13px; white-space: pre-wrap;">${comments}</p>
+          </div>
+          
+          <div style="margin-top: 30px; font-size: 10px; color: #94A3B8; text-align: center; border-top: 1px solid #E2E8F0; padding-top: 12px; font-family: monospace;">
+            This dispatch was generated automatically from the Globexxa B2B Portal.
+          </div>
+        </div>
+      `;
+
+      if (mailTransporter) {
+        console.log(`Attempting email transmission to info@globexxa.com via SMTP...`);
+        await mailTransporter.sendMail({
+          from: smtpFrom,
+          to: "info@globexxa.com",
+          subject: emailSubject,
+          text: textBody,
+          html: htmlBody,
+        });
+        console.log(`Email sent successfully for Inquiry Ref: ${referenceNo}`);
+      } else {
+        console.log(`
+------------------------------------------------------------
+[SIMULATED EMAIL DISPATCH TO info@globexxa.com]
+Subject: ${emailSubject}
+${textBody}
+------------------------------------------------------------
+Note: Configure SMTP host and authentication credentials in .env to trigger actual mail dispatches.
+`);
+      }
+
+      res.json({
+        success: true,
+        referenceNo,
+        message: "Our B2B Global Trade desk has received your request and will contact you within 24 hours.",
       });
-
-      res.json({ text: response.text });
-    } catch (err: any) {
-      console.error("Gemini API Error in /api/assistant:", err);
-      res.status(500).json({ error: err.message || "Internal server error" });
+    } catch (error: any) {
+      console.error("Error processing inquiry submission:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to process B2B Sourcing Inquiry. Please send details to info@globexxa.com directly.",
+      });
     }
-  });
-
-  // Handle contact or quote submissions on server too
-  app.post("/api/quote", (req, res) => {
-    const quoteData = req.body;
-    console.log("New B2B Quote Inquiry received:", quoteData);
-    res.json({
-      success: true,
-      referenceNo: `GXXA-${Date.now().toString().slice(-6)}`,
-      message: "Our B2B Global Trade desk has received your request and will contact you within 24 hours.",
-    });
   });
 
   // Vite middleware for development
