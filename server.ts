@@ -36,8 +36,8 @@ async function startServer() {
   // Handle contact or quote submissions on server too
   app.post("/api/quote", async (req, res) => {
     try {
-      const { name, email, phone, company, country, productCategory, comments } = req.body;
-      const referenceNo = `GXXA-${Date.now().toString().slice(-6)}`;
+      const { name, email, phone, company, country, productCategory, comments, referenceNo: clientRef } = req.body;
+      const referenceNo = clientRef || `GXXA-${Date.now().toString().slice(-6)}`;
       
       console.log(`New B2B Sourcing Inquiry received [Ref: ${referenceNo}]:`, req.body);
 
@@ -135,7 +135,7 @@ Note: Configure SMTP host and authentication credentials in .env to trigger actu
       console.error("Error processing inquiry submission:", error);
       res.status(500).json({
         success: false,
-        message: "Failed to process B2B Sourcing Inquiry. Please send details to info@globexxa.com directly.",
+        message: "Failed to process B2B Sourcing Inquiry on the server. Please complete your inquiry directly via WhatsApp.",
       });
     }
   });

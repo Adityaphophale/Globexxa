@@ -36,7 +36,7 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.company || !formData.email || !formData.country || !formData.productCategory || !formData.comments) {
       alert("Please fill in all required fields.");
@@ -46,18 +46,56 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
     setIsSubmitting(true);
     setSubmitResult(null);
 
-    try {
-      const response = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
+    const referenceNo = `GXXA-${Date.now().toString().slice(-6)}`;
 
-      const data = await response.json();
-      setSubmitResult(data);
-      
-      // Reset form if successful
-      if (data.success) {
+    // 1. Construct a detailed and professional message for WhatsApp
+    const whatsappText = `Hello Globexxa Team,
+
+I would like to submit a sourcing inquiry:
+• Name: ${formData.name}
+• Organization: ${formData.company}
+• Email: ${formData.email}
+• Phone: ${formData.phone || "N/A"}
+• Country: ${formData.country}
+• Product Interest: ${formData.productCategory}
+• Message: ${formData.comments}
+
+(Reference: ${referenceNo})`;
+
+    const encodedText = encodeURIComponent(whatsappText);
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=919274821162&text=${encodedText}`;
+
+    // 2. Open WhatsApp Web/App immediately (synchronous context avoids popup blockers)
+    window.open(whatsappUrl, "_blank");
+
+    // 3. Dispatch the API post in the background to log the lead and trigger email alerts
+    fetch("/api/quote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...formData,
+        referenceNo
+      })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setSubmitResult({
+          success: true,
+          referenceNo,
+          message: "Redirected to WhatsApp. A copy of your inquiry has also been logged with our trade desk."
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to log inquiry on server:", err);
+        setSubmitResult({
+          success: true,
+          referenceNo,
+          message: "Redirected to WhatsApp. (Note: Server log offline, message sent via WhatsApp directly.)"
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        // Reset form
         setFormData({
           name: "",
           email: "",
@@ -68,16 +106,7 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
           comments: ""
         });
         if (onClearPrefill) onClearPrefill();
-      }
-    } catch (err) {
-      console.error(err);
-      setSubmitResult({
-        success: false,
-        message: "Failed to connect to Globexxa trade desk server at the moment. Please send an email directly to info@globexxa.com."
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (
