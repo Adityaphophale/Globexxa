@@ -58,6 +58,7 @@ I have submitted a sourcing inquiry on your B2B portal. Here are my details:
 • Phone: ${formData.phone || "N/A"}
 • Country: ${formData.country}
 • Product Interest: ${formData.productCategory}
+• Sourcing Requirements: ${formData.comments}
 
 Please connect me with a trade consultant to discuss further.`;
 
