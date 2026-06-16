@@ -48,19 +48,18 @@ export default function ContactForm({ prefilledProduct, onClearPrefill }: Contac
 
     const referenceNo = `GXXA-${Date.now().toString().slice(-6)}`;
 
-    // 1. Construct a detailed and professional message for WhatsApp
+    // 1. Construct a clean and professional B2B intro message for WhatsApp with contact details
     const whatsappText = `Hello Globexxa Team,
 
-I would like to submit a sourcing inquiry:
+I have submitted a sourcing inquiry on your B2B portal. Here are my details:
 • Name: ${formData.name}
 • Organization: ${formData.company}
 • Email: ${formData.email}
 • Phone: ${formData.phone || "N/A"}
 • Country: ${formData.country}
 • Product Interest: ${formData.productCategory}
-• Message: ${formData.comments}
 
-(Reference: ${referenceNo})`;
+Please connect me with a trade consultant to discuss further.`;
 
     const encodedText = encodeURIComponent(whatsappText);
     const whatsappUrl = `https://api.whatsapp.com/send?phone=919274821162&text=${encodedText}`;
